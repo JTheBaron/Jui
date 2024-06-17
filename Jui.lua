@@ -20,7 +20,6 @@ local function applyUICorner(instance, radius)
     corner.Parent = instance
 end
 
--- Create main UI frame
 function Jui:CreateWindow(title, themeName)
     local theme = themes[themeName] or themes.ghibli
 
@@ -52,10 +51,10 @@ function Jui:CreateWindow(title, themeName)
     TitleLabel.TextSize = 20.000
     
     OpenCloseButton.Name = "OpenCloseButton"
-    OpenCloseButton.Parent = ScreenGui
+    OpenCloseButton.Parent = MainFrame
     OpenCloseButton.BackgroundColor3 = theme.ButtonColor
-    OpenCloseButton.Position = UDim2.new(0, 385, 0, 10)
-    OpenCloseButton.Size = UDim2.new(0, 25, 0, 25)
+    OpenCloseButton.Position = UDim2.new(1, -30, 0, 0)
+    OpenCloseButton.Size = UDim2.new(0, 30, 0, 25)
     OpenCloseButton.Font = Enum.Font.SourceSansBold
     OpenCloseButton.Text = "-"
     OpenCloseButton.TextColor3 = theme.ButtonTextColor
