@@ -26,7 +26,7 @@ function Jui:CreateWindow(title, themeName)
 
     local ScreenGui = Instance.new("ScreenGui")
     local MainFrame = Instance.new("Frame")
-    local Title = Instance.new("TextLabel")
+    local TitleLabel = Instance.new("TextLabel")
     local OpenCloseButton = Instance.new("TextButton")
     local TabsFrame = Instance.new("Frame")
     
@@ -41,15 +41,15 @@ function Jui:CreateWindow(title, themeName)
     MainFrame.Size = UDim2.new(0, 400, 0, 300)
     applyUICorner(MainFrame, 10)
     
-    Title.Name = "Title"
-    Title.Parent = MainFrame
-    Title.BackgroundColor3 = theme.BackgroundColor
-    Title.BackgroundTransparency = 1.000
-    Title.Size = UDim2.new(0, 400, 0, 25)
-    Title.Font = Enum.Font.SourceSansBold
-    Title.Text = title
-    Title.TextColor3 = theme.TitleColor
-    Title.TextSize = 20.000
+    TitleLabel.Name = "TitleLabel"
+    TitleLabel.Parent = MainFrame
+    TitleLabel.BackgroundColor3 = theme.BackgroundColor
+    TitleLabel.BackgroundTransparency = 1.000
+    TitleLabel.Size = UDim2.new(0, 400, 0, 25)
+    TitleLabel.Font = Enum.Font.SourceSansBold
+    TitleLabel.Text = title
+    TitleLabel.TextColor3 = theme.TitleColor
+    TitleLabel.TextSize = 20.000
     
     OpenCloseButton.Name = "OpenCloseButton"
     OpenCloseButton.Parent = ScreenGui
@@ -63,11 +63,7 @@ function Jui:CreateWindow(title, themeName)
     applyUICorner(OpenCloseButton, 5)
     OpenCloseButton.MouseButton1Click:Connect(function()
         MainFrame.Visible = not MainFrame.Visible
-        if MainFrame.Visible then
-            OpenCloseButton.Text = "-"
-        else
-            OpenCloseButton.Text = "+"
-        end
+        OpenCloseButton.Text = MainFrame.Visible and "-" or "+"
     end)
     
     TabsFrame.Name = "TabsFrame"
@@ -83,7 +79,7 @@ function Jui:CreateWindow(title, themeName)
         local TabButton = Instance.new("TextButton")
         local TabContent = Instance.new("Frame")
         
-        TabButton.Name = tabName
+        TabButton.Name = tabName .. "Button"
         TabButton.Parent = TabsFrame
         TabButton.BackgroundColor3 = theme.ButtonColor
         TabButton.Size = UDim2.new(1, 0, 0, 25)
@@ -129,11 +125,13 @@ function Jui:CreateWindow(title, themeName)
             local Toggle = Instance.new("Frame")
             local ToggleButton = Instance.new("TextButton")
             
+            Toggle.Name = toggleName .. "Toggle"
             Toggle.Parent = TabContent
             Toggle.BackgroundColor3 = theme.ButtonColor
             Toggle.Size = UDim2.new(0, 300, 0, 25)
             applyUICorner(Toggle, 5)
             
+            ToggleButton.Name = toggleName .. "ToggleButton"
             ToggleButton.Parent = Toggle
             ToggleButton.BackgroundColor3 = theme.ToggleColor
             ToggleButton.Position = UDim2.new(0, 0, 0, 0)
@@ -147,11 +145,7 @@ function Jui:CreateWindow(title, themeName)
             local toggled = false
             ToggleButton.MouseButton1Click:Connect(function()
                 toggled = not toggled
-                if toggled then
-                    ToggleButton.Position = UDim2.new(1, -25, 0, 0)
-                else
-                    ToggleButton.Position = UDim2.new(0, 0, 0, 0)
-                end
+                ToggleButton.Position = toggled and UDim2.new(1, -25, 0, 0) or UDim2.new(0, 0, 0, 0)
                 callback(toggled)
             end)
         end
@@ -178,23 +172,27 @@ function Jui:CreateWindow(title, themeName)
             local SliderButton = Instance.new("TextButton")
             local SliderValue = Instance.new("TextLabel")
             
+            Slider.Name = sliderName .. "Slider"
             Slider.Parent = TabContent
             Slider.BackgroundColor3 = theme.ButtonColor
             Slider.Size = UDim2.new(0, 300, 0, 25)
             applyUICorner(Slider, 5)
             
+            SliderBar.Name = sliderName .. "Bar"
             SliderBar.Parent = Slider
             SliderBar.BackgroundColor3 = theme.SliderColor
             SliderBar.Position = UDim2.new(0, 0, 0.5, -5)
             SliderBar.Size = UDim2.new(1, -50, 0, 10)
             applyUICorner(SliderBar, 5)
             
+            SliderButton.Name = sliderName .. "Button"
             SliderButton.Parent = SliderBar
             SliderButton.BackgroundColor3 = theme.SliderButtonColor
             SliderButton.Size = UDim2.new(0, 10, 1, 0)
             SliderButton.Text = ""
             applyUICorner(SliderButton, 5)
             
+            SliderValue.Name = sliderName .. "Value"
             SliderValue.Parent = Slider
             SliderValue.BackgroundColor3 = theme.ButtonColor
             SliderValue.Position = UDim2.new(1, -40, 0, 0)
