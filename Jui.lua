@@ -63,7 +63,11 @@ function Jui:CreateWindow(title, themeName)
     applyUICorner(OpenCloseButton, 5)
     OpenCloseButton.MouseButton1Click:Connect(function()
         MainFrame.Visible = not MainFrame.Visible
-        OpenCloseButton.Text = MainFrame.Visible and "-" or "+"
+        if MainFrame.Visible then
+            OpenCloseButton.Text = "-"
+        else
+            OpenCloseButton.Text = "+"
+        end
     end)
     
     TabsFrame.Name = "TabsFrame"
@@ -79,7 +83,7 @@ function Jui:CreateWindow(title, themeName)
         local TabButton = Instance.new("TextButton")
         local TabContent = Instance.new("Frame")
         
-        TabButton.Name = tabName .. "Button"
+        TabButton.Name = tabName
         TabButton.Parent = TabsFrame
         TabButton.BackgroundColor3 = theme.ButtonColor
         TabButton.Size = UDim2.new(1, 0, 0, 25)
@@ -125,13 +129,11 @@ function Jui:CreateWindow(title, themeName)
             local Toggle = Instance.new("Frame")
             local ToggleButton = Instance.new("TextButton")
             
-            Toggle.Name = toggleName .. "Toggle"
             Toggle.Parent = TabContent
             Toggle.BackgroundColor3 = theme.ButtonColor
             Toggle.Size = UDim2.new(0, 300, 0, 25)
             applyUICorner(Toggle, 5)
             
-            ToggleButton.Name = toggleName .. "ToggleButton"
             ToggleButton.Parent = Toggle
             ToggleButton.BackgroundColor3 = theme.ToggleColor
             ToggleButton.Position = UDim2.new(0, 0, 0, 0)
@@ -145,7 +147,11 @@ function Jui:CreateWindow(title, themeName)
             local toggled = false
             ToggleButton.MouseButton1Click:Connect(function()
                 toggled = not toggled
-                ToggleButton.Position = toggled and UDim2.new(1, -25, 0, 0) or UDim2.new(0, 0, 0, 0)
+                if toggled then
+                    ToggleButton.Position = UDim2.new(1, -25, 0, 0)
+                else
+                    ToggleButton.Position = UDim2.new(0, 0, 0, 0)
+                end
                 callback(toggled)
             end)
         end
@@ -172,33 +178,29 @@ function Jui:CreateWindow(title, themeName)
             local SliderButton = Instance.new("TextButton")
             local SliderValue = Instance.new("TextLabel")
             
-            Slider.Name = sliderName .. "Slider"
             Slider.Parent = TabContent
             Slider.BackgroundColor3 = theme.ButtonColor
             Slider.Size = UDim2.new(0, 300, 0, 25)
             applyUICorner(Slider, 5)
             
-            SliderBar.Name = sliderName .. "Bar"
             SliderBar.Parent = Slider
             SliderBar.BackgroundColor3 = theme.SliderColor
             SliderBar.Position = UDim2.new(0, 0, 0.5, -5)
             SliderBar.Size = UDim2.new(1, -50, 0, 10)
             applyUICorner(SliderBar, 5)
             
-            SliderButton.Name = sliderName .. "Button"
             SliderButton.Parent = SliderBar
             SliderButton.BackgroundColor3 = theme.SliderButtonColor
             SliderButton.Size = UDim2.new(0, 10, 1, 0)
             SliderButton.Text = ""
             applyUICorner(SliderButton, 5)
             
-            SliderValue.Name = sliderName .. "Value"
             SliderValue.Parent = Slider
             SliderValue.BackgroundColor3 = theme.ButtonColor
             SliderValue.Position = UDim2.new(1, -40, 0, 0)
             SliderValue.Size = UDim2.new(0, 40, 1, 0)
             SliderValue.Font = Enum.Font.SourceSans
-            SliderValue.Text = min
+            SliderValue.Text = tostring(min)
             SliderValue.TextColor3 = theme.ButtonTextColor
             SliderValue.TextSize = 20.000
             applyUICorner(SliderValue, 5)
@@ -218,7 +220,7 @@ function Jui:CreateWindow(title, themeName)
                     local sliderValue = math.clamp(mousePos / SliderBar.AbsoluteSize.X, 0, 1)
                     SliderButton.Position = UDim2.new(sliderValue, -5, 0, 0)
                     local value = math.floor(sliderValue * (max - min) + min)
-                    SliderValue.Text = value
+                    SliderValue.Text = tostring(value)
                     callback(value)
                 end
             end)
