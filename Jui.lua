@@ -1,20 +1,28 @@
 local Jui = {}
 
--- Default theme
-local defaultTheme = {
-    BackgroundColor = Color3.fromRGB(30, 30, 30),
-    TitleColor = Color3.fromRGB(255, 255, 255),
-    ButtonColor = Color3.fromRGB(50, 50, 50),
-    ButtonTextColor = Color3.fromRGB(255, 255, 255),
-    ToggleColor = Color3.fromRGB(70, 70, 70),
-    SliderColor = Color3.fromRGB(70, 70, 70),
-    SliderButtonColor = Color3.fromRGB(90, 90, 90),
-    OutlineColor = Color3.fromRGB(255, 255, 255)
+-- Themes
+local themes = {
+    ghibli = {
+        BackgroundColor = Color3.fromRGB(139, 69, 19),  -- Brown
+        TitleColor = Color3.fromRGB(255, 255, 255),    -- White
+        ButtonColor = Color3.fromRGB(34, 139, 34),     -- Green
+        ButtonTextColor = Color3.fromRGB(255, 255, 255), -- White
+        ToggleColor = Color3.fromRGB(34, 139, 34),     -- Green
+        SliderColor = Color3.fromRGB(34, 139, 34),     -- Green
+        SliderButtonColor = Color3.fromRGB(0, 100, 0), -- Dark Green
+        OutlineColor = Color3.fromRGB(255, 255, 255)   -- White
+    }
 }
 
+local function applyUICorner(instance, radius)
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, radius)
+    corner.Parent = instance
+end
+
 -- Create main UI frame
-function Jui:CreateWindow(title, theme)
-    theme = theme or defaultTheme
+function Jui:CreateWindow(title, themeName)
+    local theme = themes[themeName] or themes.ghibli
 
     local ScreenGui = Instance.new("ScreenGui")
     local MainFrame = Instance.new("Frame")
@@ -31,11 +39,7 @@ function Jui:CreateWindow(title, theme)
     MainFrame.BorderSizePixel = 0
     MainFrame.Position = UDim2.new(0, 10, 0, 10)
     MainFrame.Size = UDim2.new(0, 400, 0, 300)
-    MainFrame.ClipsDescendants = true
-    MainFrame.BorderMode = Enum.BorderMode.Inset
-    MainFrame.BorderSizePixel = 2
-    MainFrame.BorderColor3 = theme.OutlineColor
-    MainFrame.CornerRadius = UDim.new(0, 10)
+    applyUICorner(MainFrame, 10)
     
     Title.Name = "Title"
     Title.Parent = MainFrame
@@ -56,6 +60,7 @@ function Jui:CreateWindow(title, theme)
     OpenCloseButton.Text = "-"
     OpenCloseButton.TextColor3 = theme.ButtonTextColor
     OpenCloseButton.TextSize = 20.000
+    applyUICorner(OpenCloseButton, 5)
     OpenCloseButton.MouseButton1Click:Connect(function()
         MainFrame.Visible = not MainFrame.Visible
         if MainFrame.Visible then
@@ -71,10 +76,7 @@ function Jui:CreateWindow(title, theme)
     TabsFrame.BorderSizePixel = 0
     TabsFrame.Position = UDim2.new(0, 0, 0, 25)
     TabsFrame.Size = UDim2.new(0, 100, 1, -25)
-    TabsFrame.BorderMode = Enum.BorderMode.Inset
-    TabsFrame.BorderSizePixel = 2
-    TabsFrame.BorderColor3 = theme.OutlineColor
-    TabsFrame.CornerRadius = UDim.new(0, 10)
+    applyUICorner(TabsFrame, 10)
     
     local Tabs = {}
     function Tabs:CreateTab(tabName)
@@ -89,6 +91,7 @@ function Jui:CreateWindow(title, theme)
         TabButton.Text = tabName
         TabButton.TextColor3 = theme.ButtonTextColor
         TabButton.TextSize = 20.000
+        applyUICorner(TabButton, 5)
         
         TabContent.Name = tabName .. "Content"
         TabContent.Parent = MainFrame
@@ -97,10 +100,7 @@ function Jui:CreateWindow(title, theme)
         TabContent.Position = UDim2.new(0, 100, 0, 25)
         TabContent.Size = UDim2.new(1, -100, 1, -25)
         TabContent.Visible = false
-        TabContent.BorderMode = Enum.BorderMode.Inset
-        TabContent.BorderSizePixel = 2
-        TabContent.BorderColor3 = theme.OutlineColor
-        TabContent.CornerRadius = UDim.new(0, 10)
+        applyUICorner(TabContent, 10)
         
         TabButton.MouseButton1Click:Connect(function()
             for _, content in pairs(MainFrame:GetChildren()) do
@@ -121,10 +121,7 @@ function Jui:CreateWindow(title, theme)
             Button.Text = buttonName
             Button.TextColor3 = theme.ButtonTextColor
             Button.TextSize = 20.000
-            Button.BorderMode = Enum.BorderMode.Inset
-            Button.BorderSizePixel = 2
-            Button.BorderColor3 = theme.OutlineColor
-            Button.CornerRadius = UDim.new(0, 10)
+            applyUICorner(Button, 5)
             Button.MouseButton1Click:Connect(callback)
         end
         
@@ -135,10 +132,7 @@ function Jui:CreateWindow(title, theme)
             Toggle.Parent = TabContent
             Toggle.BackgroundColor3 = theme.ButtonColor
             Toggle.Size = UDim2.new(0, 300, 0, 25)
-            Toggle.BorderMode = Enum.BorderMode.Inset
-            Toggle.BorderSizePixel = 2
-            Toggle.BorderColor3 = theme.OutlineColor
-            Toggle.CornerRadius = UDim.new(0, 10)
+            applyUICorner(Toggle, 5)
             
             ToggleButton.Parent = Toggle
             ToggleButton.BackgroundColor3 = theme.ToggleColor
@@ -148,10 +142,7 @@ function Jui:CreateWindow(title, theme)
             ToggleButton.Text = ""
             ToggleButton.TextColor3 = theme.ButtonTextColor
             ToggleButton.TextSize = 20.000
-            ToggleButton.BorderMode = Enum.BorderMode.Inset
-            ToggleButton.BorderSizePixel = 2
-            ToggleButton.BorderColor3 = theme.OutlineColor
-            ToggleButton.CornerRadius = UDim.new(0, 10)
+            applyUICorner(ToggleButton, 5)
             
             local toggled = false
             ToggleButton.MouseButton1Click:Connect(function()
@@ -175,10 +166,7 @@ function Jui:CreateWindow(title, theme)
             TextBox.Text = ""
             TextBox.TextColor3 = theme.ButtonTextColor
             TextBox.TextSize = 20.000
-            TextBox.BorderMode = Enum.BorderMode.Inset
-            TextBox.BorderSizePixel = 2
-            TextBox.BorderColor3 = theme.OutlineColor
-            TextBox.CornerRadius = UDim.new(0, 10)
+            applyUICorner(TextBox, 5)
             TextBox.FocusLost:Connect(function()
                 callback(TextBox.Text)
             end)
@@ -193,28 +181,19 @@ function Jui:CreateWindow(title, theme)
             Slider.Parent = TabContent
             Slider.BackgroundColor3 = theme.ButtonColor
             Slider.Size = UDim2.new(0, 300, 0, 25)
-            Slider.BorderMode = Enum.BorderMode.Inset
-            Slider.BorderSizePixel = 2
-            Slider.BorderColor3 = theme.OutlineColor
-            Slider.CornerRadius = UDim.new(0, 10)
+            applyUICorner(Slider, 5)
             
             SliderBar.Parent = Slider
             SliderBar.BackgroundColor3 = theme.SliderColor
             SliderBar.Position = UDim2.new(0, 0, 0.5, -5)
             SliderBar.Size = UDim2.new(1, -50, 0, 10)
-            SliderBar.BorderMode = Enum.BorderMode.Inset
-            SliderBar.BorderSizePixel = 2
-            SliderBar.BorderColor3 = theme.OutlineColor
-            SliderBar.CornerRadius = UDim.new(0, 10)
+            applyUICorner(SliderBar, 5)
             
             SliderButton.Parent = SliderBar
             SliderButton.BackgroundColor3 = theme.SliderButtonColor
             SliderButton.Size = UDim2.new(0, 10, 1, 0)
             SliderButton.Text = ""
-            SliderButton.BorderMode = Enum.BorderMode.Inset
-            SliderButton.BorderSizePixel = 2
-            SliderButton.BorderColor3 = theme.OutlineColor
-            SliderButton.CornerRadius = UDim.new(0, 10)
+            applyUICorner(SliderButton, 5)
             
             SliderValue.Parent = Slider
             SliderValue.BackgroundColor3 = theme.ButtonColor
@@ -224,10 +203,7 @@ function Jui:CreateWindow(title, theme)
             SliderValue.Text = min
             SliderValue.TextColor3 = theme.ButtonTextColor
             SliderValue.TextSize = 20.000
-            SliderValue.BorderMode = Enum.BorderMode.Inset
-            SliderValue.BorderSizePixel = 2
-            SliderValue.BorderColor3 = theme.OutlineColor
-            SliderValue.CornerRadius = UDim.new(0, 10)
+            applyUICorner(SliderValue, 5)
             
             local sliding = false
             SliderButton.MouseButton1Down:Connect(function()
